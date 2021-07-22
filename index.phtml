@@ -1,0 +1,1459 @@
+<?php
+$item       = $this->viewModel['item'];
+$itemAll    = $this->viewModel['itemAll'];
+$params     = $this->viewModel['params'];
+$template   = '/' . basename(__DIR__);
+$urlImg     = $this->arrParams['template']['urlThemeTemplate'] . $template . '/images';
+$settings   = $this->viewModel['settings'];
+$hotline    = explode(' - ', $setting['General.System.Hotline']['value']);
+$images     = unserialize($item['images']) ?: [];
+$current_url =  DOMAIN . $_SERVER['REQUEST_URI'];
+$videos     = unserialize($item['videos']) ?: [];
+$video_id   = (new \ZendX\Functions\WordFirst)->getYoutubeId($videos['id'][0]) ?: '5fYBt2wcRTE';
+?>
+<html>
+
+<head>
+    <?php
+    // Title
+    echo $this->headTitle($item['name'] ?: $setting['General.Meta.Title']['value']);
+
+    // Meta
+    echo $this->headMeta()
+        ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+        ->setCharset('utf-8');
+
+    // CSS
+    echo $this->headLink(array('rel' => 'shortcut icon', 'href' => $this->arrParams['template']['urlImg'] . '/favicon.png', 'type' => 'image/x-icon'), 'PREPEND')
+        ->appendStylesheet($this->arrParams['template']['urlTheme'] . '/template/vendor/css/bootstrap-v3.3.7.min.css')
+        ->appendStylesheet($this->arrParams['template']['urlTheme'] . '/template/vendor/css/fancybox-v2.1.5.css')
+        ->appendStylesheet($this->arrParams['template']['urlTheme'] . '/template/vendor/css/animate.css')
+        ->appendStylesheet($this->arrParams['template']['urlTheme'] . '/template/vendor/css/bootstrap-select-v1.12.4.min.css')
+        ->appendStylesheet($this->arrParams['template']['urlThemeTemplate'] . $template . '/css/style.css');
+
+    include_once $this->arrParams['template']['pathHtml'] . '/js/header.php';
+    ?>
+    <meta property="og:image" content="<?php echo $item['image_course'] ? (DOMAIN . $item['image_course']) : $setting['General.Meta.Image']['value']; ?>" />
+    <meta name="author" content="<?php echo $setting['General.Meta.Author']['value']; ?>">
+    <meta property="og:title" content="<?php echo $item['meta_title'] ?: $setting['General.Meta.Title']['value']; ?>" />
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="<?php echo $item['description'] ?: $setting['General.Meta.Description']['value']; ?>" />
+    <meta property="og:keywords" content="<?php echo $item['meta_keywords'] ?: $setting['General.Meta.Keywords']['value']; ?>" />
+    <meta property="og:url" content="<?php echo DOMAIN . $_SERVER['REQUEST_URI']; ?>" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="canonical" href="<?php echo DOMAIN . $_SERVER['REQUEST_URI']; ?>" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <?php include_once $this->arrParams['template']['pathHtml'] . '/js/body.php'; ?>
+    <?php include_once $this->arrParams['template']['pathHtml'] . '/box/top.php'; ?>
+
+    <div class="box_header" id="box_menu">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-1">
+                    <a href="" class="logo"><img src="<?php echo $this->arrParams['template']['urlTheme'] . '/template/vendor/images/hbr-logo.png'; ?>"></a>
+                </div>
+                <div class="col-md-4">
+                    <span class="hotline hidden-xs hidden-sm">
+                        <i class="fa fa-phone" aria-hidden="true"></i>
+                        <?php echo implode(' - ', array_map(function ($val) {
+                            return '<a href="tel:' . str_replace('.', '', $val) . '">' . $val . '</a>';
+                        }, $hotline)); ?>
+                    </span>
+                </div>
+                <div class="col-md-7">
+                    <div class="clr"></div>
+                    <ul class="menu hidden-xs hidden-sm">
+                        <li><a href="javascript:;" class="go_box btn_book" data-box="box_dangKy">Đăng ký ngay</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="menu_mobile hidden-md hidden-lg">
+                <span class="hotline">
+                    <i class="fa fa-phone" aria-hidden="true"></i>
+                    <?php echo implode(' - ', array_map(function ($val) {
+                        return '<a href="tel:' . str_replace('.', '', $val) . '">' . $val . '</a>';
+                    }, $hotline)); ?>
+                </span>
+                <a href="javascript:;" class="go_box btn_book" data-box="box_dangKy">Đăng ký ngay</a>
+                <a href="javascript:;" class="hidden">
+                    <span class="item"></span>
+                    <span class="item"></span>
+                    <span class="item"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- end box_header -->
+
+    <div class="box_banner" id="box_banner">
+        <div class="image"><a href="javascript:;" class="go_box" data-box="box_dangKy"><img class="img-responsive" alt="<?php echo $item['name']; ?>" src="<?php echo $urlImg; ?>/bannertvq2.jpg"></a></div>
+    </div>
+    <!-- end box_banner -->
+    <div id="event-new-book">
+        <div class="container">
+            <div class="introduce-event-book">
+                <div class="container">
+                    <div class="row">
+                        <div class="title col-md-6 col-lg-6 col-xl-6 text-center">
+                            <img src="<?php echo $urlImg ?>/event-new-book/event-title.png">
+                        </div>
+                        <div class="depcription col-md-6 col-lg-6 col-xl-6">
+                            <div class="item">
+                                <div class="row">
+                                    <div class="arrow col-md-3">giảm đến</div>
+                                    <div class="depcrip-arrow col-md-9">
+                                        <p class="p-one"><span>10%</span> khi đặt mua bất kỳ sách nào trước 0h (tối
+                                            thiểu từ 1 cuốn trở lên)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="row">
+                                    <div class="arrow col-md-3">chỉ còn</div>
+                                    <div class="depcrip-arrow col-md-9">
+                                        <p class="p-one"><span>986K</span> khi mua ngay combo 4 cuốn sách (giá gốc
+                                            1.298K)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="row">
+                                    <div class="arrow col-md-3">free ship</div>
+                                    <div class="depcrip-arrow col-md-9">
+                                        <p class="p-one"><span>toàn quốc</span> khi mua từ 2 cuốn trở lên </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="order-book">
+                <div class="container">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="order">
+                                    <div class="focus">
+                                        Tặng ngay
+                                    </div>
+                                    <div class="title">
+                                        <p>THỜI GIAN CÒN</p>
+                                    </div>
+                                    <div id="timer">
+                                        <div class="timeline">
+                                            <div class="playtime" id="hours"></div>
+                                            <label for="hours">Giờ</label>
+                                        </div>
+                                        <div class="timeline">
+                                            <div class="playtime" id="minutes"></div>
+                                            <label for="minutes">Phút</label>
+                                        </div>
+                                        <div class="timeline">
+                                            <div class="playtime" id="seconds"></div>
+                                            <label for="seconds">Giây</label>
+                                        </div>
+                                    </div>
+                                    <div class="button-register text-center">
+                                        <input type="button" value="ĐẶT SÁCH NGAY">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="depcrip-order col-md-6">
+                                <div class="depcrip-order-one">
+                                    <p class="p-one">Bộ khóa học Online</p>
+                                    <p class="p-two">"thu hút, tuyển dụng, đào tạo và giữ chân nhân tài"</p>
+                                    <p class="p-three">Của TS. Alok Bharadwaj - Cựu phó chủ tịch cao cấp phụ trách chiến
+                                        lược Canon Châu Á trị giá 1.200.000 vnđ</p>
+                                    <p class="p-four">(Độc quyền tại HBR)</p>
+                                </div>
+                                <div class="depcrip-order-two">
+                                    <p class="p-one">01 cuốn lịch để bàn</p>
+                                    <p class="p-two">Quản trị nhân sự tổng hợp 12+ mô hình/phương pháp quản lý, tuyển
+                                        dụng và đào tạo nhân sự trong doanh nghiệp</p>
+                                    <p class="p-three">(Độc quyền tại HBR)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end event new book -->
+
+    <!-- reason -->
+    <div id="reason">
+        <div class="container">
+            <div class="title">
+                <img src="<?php echo $urlImg ?>/reason/title-number-six.png">
+                <h1><span>lý do </span>khiến doanh nghiệp<span id="special"> "vụt mất" nhân tài </span></h1>
+            </div>
+            <div class="content">
+                <div class="container">
+                    <div class="item">
+                        <img class="img-first" src="<?php echo $urlImg ?>/reason/icon-1-1.png">
+                        <div>
+                            Tư duy tuyển dụng cảm tính, chỉ cần “tuyển đủ người” cho đạt KPI mà không quan tâm chọn lọc
+                            CV chất lượng, dẫn đến tuyển sai người sai việc, CV ít, chất lượng CV thấp
+                        </div>
+                        <img class="img-last" src="<?php echo $urlImg ?>/reason/icon-2.png">
+                    </div>
+                    <div class="item">
+                        <img class="img-first" src="<?php echo $urlImg ?>/reason/icon-1-2.png">
+                        <img class="img-last" src="<?php echo $urlImg ?>/reason/icon-2.png">
+                        <div> Quy trình tuyển dụng rườm rà cồng kềnh, hệ thống tuyển dụng & đào tạo nhân sự không được
+                            đóng gói chuyên nghiệp và tối ưu</div>
+                    </div>
+                    <div class="item">
+                        <img class="img-first" src="<?php echo $urlImg ?>/reason/icon-1-3.png">
+                        <img class="img-last" src="<?php echo $urlImg ?>/reason/icon-2.png">
+                        <div>Không biết/thiếu công cụ xây dựng khung năng lực đánh giá ứng viên và nhân sự trong doanh
+                            nghiệp</div>
+                    </div>
+                    <div class="item">
+                        <img class="img-first" src="<?php echo $urlImg ?>/reason/icon-1-4.png">
+                        <img class="img-last" src="<?php echo $urlImg ?>/reason/icon-2.png">
+                        <div>Đội ngũ HR kém chất lượng, thiếu kỹ năng, chuyên môn tuyển dụng & quản lý nhân sự căn bản
+                            cần
+                            thiết, nhất là kỹ năng phỏng vấn, đánh giá và chọn lọc ứng viên đầu vào</div>
+                    </div>
+                    <div class="item">
+                        <img class="img-first" src="<?php echo $urlImg ?>/reason/icon-1-5.png">
+                        <img class="img-last" src="<?php echo $urlImg ?>/reason/icon-2.png">
+                        <div>Năng lực quản lý nhân sự của lãnh đạo chưa cao, tư duy lãnh đạo cứng nhắc, bảo thủ; đồng
+                            thời
+                            thiếu phương pháp lãnh đạo phù hợp và linh hoạt với từng đội nhóm</div>
+                    </div>
+                    <div class="item">
+                        <img class="img-first" src="<?php echo $urlImg ?>/reason/icon-1-6.png">
+                        <img class="img-last" src="<?php echo $urlImg ?>/reason/icon-2.png">
+                        <div>Doanh nghiệp trở nên kém chuyên nghiệp, không nổi bật do không chú trọng xây dựng thương
+                            hiệu
+                            tuyển dụng gắn liền với thương hiệu doanh nghiệp dẫn đến không thể hấp dẫn các ứng viên chất
+                            lượng cao</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-register">
+                <button class="text">đặt sách ngay</button>
+            </div>
+        </div>
+    </div>
+    <!-- end reason -->
+
+    <!-- human resource management book -->
+    <div id="book-management">
+        <div class="container">
+            <div class="text-depcription">
+                <div class="container">
+                    <div class="deprip">
+                        <p class="p-one"> Cùng với diễn biến phức tạp của thị trường, hầu hết doanh nghiệp đã và đang
+                            dịch chuyển dần
+                            sang hình thức kinh doanh online để có thể tồn tại và sống sót. Bên cạnh việc cấp thiết phải
+                            thay đổi chiến thuật kinh doanh, nhà lãnh đạo càng cần hơn những kỹ năng, công cụ “đọc vị”
+                            con người để hiểu được tính cách bất cứ ai, từ đó nhanh chóng tìm ra phương pháp quản trị
+                            con người hiệu quả, sớm tạo được nội lực và bệ phóng bứt phá mạnh mẽ trong tương lai. Hơn ai
+                            hết chính nhà lãnh đạo, quản lý doanh nghiệp hiểu rằng <span>nhân lực - nhân sự cốt
+                                lõi</span>
+                            mới là yếu tố chính mà doanh nghiệp phải tập trung đầu tư xây dựng và nâng cao giá trị ngay
+                            từ bây giờ</p>
+                        <p class="p-two">
+                            Thấu hiểu được nhu cầu bức thiết xây dựng nguồn lực nhân sự cốt lõi của anh/chị, trường
+                            doanh nhân HBR trân trọng giới thiệu tới nhà lãnh đạo, quản lý doanh nghiệp <span>bộ sách
+                                mới nhất</span>
+                            chủ đề Quản trị Nhân sự, do trường <span>độc quyền</span> dịch và xuất bản ấn phẩm!
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="title">
+                <h2>bộ 4 sách quản trị nhân sự mới nhất 2021</h2>
+                <img src="<?php echo $urlImg ?>/book-manage/book.png">
+            </div>
+            <div class="button-register">
+                <button class="text">đặt sách ngay</button>
+            </div>
+        </div>
+    </div>
+    <!-- end human resource management book -->
+
+    <!-- content book -->
+    <div id="content-book">
+        <div class="container">
+            <div class="content">
+                <img src="<?php echo $urlImg ?>/content-book/book.png">
+                <h2>nội dung sách</h2>
+            </div>
+        </div>
+
+    </div>
+    <!-- end content book -->
+
+    <!-- right recruitment book -->
+    <div id="right-recruitment-book">
+        <div class="container">
+            <div class="content">
+                <div class="row">
+                    <div class="image col-md-5 col-12">
+                        <img src="<?php echo $urlImg ?>/right-recruitment-book/book.png">
+                        <div class="button-register">
+                            <button class="text">đặt sách ngay</button>
+                        </div>
+                    </div>
+                    <div class="depcrip col-md-7 col-12">
+                        <div class="title">
+                            <div class="title-infor">
+                                <h3>tuyển dụng hiểu đúng làm đúng</h3>
+                                <h5>Tác giả: Mr. Tony Dzung - Mr. Trần Trung Hiếu</h5>
+                                <h6>Giá: 368.000 VNĐ</h6>
+                            </div>
+                            <div class="title-number"><span>01</span></div>
+                        </div>
+                        <div class="content-text">
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Tuyển người đã khó, tuyển đúng người phù hợp với doanh nghiệp càng khó hơn, vậy
+                                    <span>lãnh
+                                        đạo
+                                        cần làm gì để tìm và tuyển đúng người</span> phù hợp đó?
+                                </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Nhấn mạnh tầm quan trọng của nguồn <span> dữ liệu và công cụ</span> hỗ trợ cần thiết
+                                    về nhân sự và
+                                    “săn” được ứng viên phù hợp; <span>hệ thống báo cáo, đo lường và thống kê </span>các
+                                    loại chi phí
+                                    liên quan để lãnh đạo có chiến lược nhân sự phù hợp </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Chỉ rõ sự kết nối không thể tách rời giữa <span>chiến lược kinh doanh, thương hiệu
+                                        tuyển
+                                        dụng và chiến lược nhân sự</span>, đặc biệt khẳng định vai trò lãnh đạo của
+                                    người đứng đầu
+                                    trong việc xây dựng chiến lược tuyển dụng và giữ chân nhân sự </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Phân tích những <span>tư duy cứng nhắc, bảo thủ và hành động sai lầm của nhà lãnh
+                                        đạo </span>cả
+                                    trong quá trình lãnh đạo doanh nghiệp và trong tuyển dụng, từ đó có định hướng thay
+                                    đổi để cải thiện và nâng cao năng lực lãnh đạo </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Lý giải tầm quan trọng của việc tạo <span>nguồn ứng viên phù hợp</span> và quy trình
+                                    chi tiết để
+                                    <span>set up team tuyển dụng</span>, đồng thời cung cấp các công cụ hỗ trợ giúp quy
+                                    trình tuyển
+                                    dụng hiệu quả và nhanh chóng
+                                </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Lợi ích của việc <span>ứng dụng tư duy Sales & marketing vào tuyển dụng</span> đúng
+                                    người đúng
+                                    việc; chi tiết Phễu tuyển dụng và các giai đoạn tuyển dụng có tính chọn lọc cao;
+                                    đồng thời chia sẻ những kỹ năng, phương pháp phỏng vấn, “chốt deal” ứng viên chuyên
+                                    nghiệp, hiệu quả </p>
+                            </div>
+                            <div class="item m-top">
+                                <div class="arrow-right"></div>
+                                <p>Chia sẻ những <span>câu chuyện thành công</span> và <span>bài học kinh doanh</span>
+                                    từ chính các case study thực tế </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Chỉ rõ <span>9 tảng đá lớn nhất</span> mà hầu hết phòng ban Nhân sự trong tổ chức nào
+                                    cũng “vấp”
+                                    phải, từ đó tìm ra phương pháp khắc phục và rút ra bài học kinh nghiệm xương máu
+                                </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Chi tiết <span>bộ câu hỏi phỏng vấn</span> vị trí telesales và nhân viên kinh doanh
+                                    có tính sàng
+                                    lọc cao; lời khuyên dành riêng cho team HR và "bức tranh toàn cảnh" sâu sắc về thị
+                                    trường tuyển dụng ngày nay dành cho nhà lãnh đạo </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end right recruitment book -->
+
+    <!-- appli MBTI -->
+    <div id="mbti">
+        <div class="container">
+            <div class="content">
+                <div class="row">
+                    <div class="depcrip col-md-7 col-12">
+                        <div class="title">
+                            <div class="title-number"><span>02</span></div>
+                            <div class="title-infor">
+                                <h3>ứng dụng mbti trong quản trị nhân sự</h3>
+                                <h5>Tác giả: Otto Kroeger, Janet M Thuesen & Hile Rutledge</h5>
+                                <h6>Giá: 290.000 VNĐ</h6>
+                            </div>
+                        </div>
+                        <div class="content-text">
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Khái quát tầm quan trọng của con người, <span>4 cặp xu hướng tính cách</span> và 4
+                                    nhóm tính cách
+                                    nhỏ đặc trưng của con người hiện nay </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Phương pháp tìm ra <span>nhóm tính cách đặc trưng của bản thân</span> và mọi người
+                                    một cách nhanh
+                                    chóng, chính xác, từ đó tìm ra phong cách làm việc của chính mình và mọi người </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p><span>10 lời khuyên</span> khi ứng dụng Phân loại tính cách mà ai cũng cần biết </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Chi tiết xu hướng các cặp tính cách thể hiện t<span>tư duy, phong cách lãnh đạo
+                                    </span>đặc trưng</p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Xu hướng 4 cặp tính cách <span>tiếp cận & làm việc nhóm</span> với những đồng
+                                    sự và lãnh đạo; lời khuyên hữu ích cho từng nhóm tính cách trong quá trình làm
+                                    việc</p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Xu hướng đánh giá, nhìn nhận và tư duy <span>giải quyết vấn đề </span>ủa 4 cặp nhóm
+                                    tính cách trong công việc và cuộc sống</p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Cách thức đánh giá phân tích và xu hướng kiểm soát, <span>giải quyết xung đột và căng
+                                        thẳng</span>, đặc biệt trong môi trường làm việc và lời khuyên hữu ích dành
+                                    riêng cho từng nhóm tính cách</p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Cách <span>thiết lập mục tiêu</span> của 4 cặp tính cách trong cuộc sống và công việc
+                                    của họ; lời khuyên cụ thể về cách đặt mục tiêu cho từng tính cách</p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Sự khác biệt trong cách <span>quản lý và sử dụng thời gian</span> của 4 cặp tính cách
+                                    trong công việc, đặc biệt với nhóm tính cách Nguyên tắc</p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Bí mật "cân bằng đội nhóm" trong <span>tuyển dụng và dùng người</span>. Lời khuyên
+                                    dành riêng cho lãnh đạo và phòng Nhân sự để tuyển dụng đúng</p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Quan điểm, tư tưởng và hành vi của 4 cặp nhóm tính cách trên phương diện <span>đạo
+                                        đức</span>. 3 bước cơ bản để các nhóm tính cách xử lý và đối mặt với vấn đề đạo
+                                    đức trong công việc và cuộc sống</p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Đào sâu sự khác biệt trong phong cách <span>bán hàng</span> của 4 cặp nhóm tính cách,
+                                    lời khuyên
+                                    dành riêng cho từng nhóm để kinh doanh hiệu quả hơn</p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Chỉ số của <span>16 nhóm tính cách trong công việc và vị trí cụ thể</span> nhân sự
+                                    mới, quản lý cấp trung, quản lý cấp cao, giám đốc điều hành, về chuyên môn, giáo
+                                    dục...
+                                </p>
+                            </div>
+                            <div class="item last">
+                                <div class="arrow-right"></div>
+                                <p><span>16 nhóm tính cách trong công việc</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image col-md-5 col-12">
+                        <img src="<?php echo $urlImg ?>/MBTI/book.png">
+                        <div class="button-register">
+                            <button class="text">đặt sách ngay</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- end appliMBTI -->
+
+    <!-- book 03 -->
+    <div id="book-three">
+        <div class="container">
+            <div class="content">
+                <div class="row">
+                    <div class="image col-md-5 col-12">
+                        <img src="<?php echo $urlImg ?>/book-three/book.png">
+                        <div class="button-register">
+                            <button class="text">đặt sách ngay</button>
+                        </div>
+                    </div>
+                    <div class="depcrip col-md-7 col-12">
+                        <div class="title">
+                            <div class="title-infor">
+                                <h3>biết người biết ta cùng mbti</h3>
+                                <h5>Tác giả: Otto Kroeger & Janet M Thuesen </h5>
+                                <h6>Giá: 290.000 VNĐ</h6>
+                            </div>
+                            <div class="title-number"><span>03</span></div>
+                        </div>
+                        <div class="content-text">
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Hiểu sâu về cách thức <span>hình thành và phân loại 4 cặp khuynh hướng</span> tính
+                                    cách của một
+                                    người
+                                </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Bí quyết để <span>tìm ra nhóm tính cách đặc trưng</span> của bạn dựa trên 4 cặp
+                                    khuynh hướng trên
+                                </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Đặc trưng và sự khác biệt của 8 khuynh hướng tính cách thể hiện qua hành vi, suy
+                                    nghĩ, xu hướng hành động và lời nói
+                                </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Cách "đi tắt" để bạn nhanh chóng <span>tìm ra xu hướng "khí chất"</span> của mình và
+                                    mọi người chỉ bằng vài quan sát & đánh giá nhỏ
+                                </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Hướng dẫn tìm ra nhóm tính cách đặc trưng của bạn và người đối diện thông qua
+                                    <span>Quan sát nhóm tính cách</span>
+                                </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Tìm hiểu các nhóm tính cách bộc lộ xu hướng của mình qua suy nghĩ, hành vi, thái độ
+                                    và liên kết với các thành viên khác <span>trong công việc</span>
+                                </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Mô tả cách 8 nhóm tính cách kết bạn, kết nối và chia sẻ với <span>bạn bè, người
+                                        yêu</span>, những điều trái ngược trong mối quan hệ bạn bè, tình yêu và cách để
+                                    hóa giải chúng
+                                </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Sự khác biệt của 8 nhóm tính cách trong mối quan hệ <span>cha mẹ - con cái</span>,
+                                    lời khuyên để cân bằng sự khác biệt đó trong gia đình và người thân
+                                </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p><span>Quan sát nhóm tính cách ở khắp mọi nơi</span> trường học, giảng dạy, hướng
+                                    nghiệp, công việc, cách sử dụng tiền bạc, năng khiếu hài hước,... chỉ rõ xu hướng tư
+                                    duy, suy nghĩ và hành vi khác biệt của các nhóm tính cách
+                                </p>
+                            </div>
+                            <div class="item last">
+                                <div class="arrow-right"></div>
+                                <p>"Chân dung” <span>16 nhóm tính cách cơ bản</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end book 03 -->
+
+    <!-- Leadership capacity building -->
+    <div id="leadership-capacity-building">
+        <div class="container">
+            <div class="content">
+                <div class="row">
+                    <div class="depcrip col-md-7 col-12">
+                        <div class="title">
+                            <div class="title-number"><span>04</span></div>
+                            <div class="title-infor">
+                                <h3>xây dựng năng lực lãnh đạo</h3>
+                                <h5>Tác giả: Peter G. Northouse</h5>
+                                <h6>Giá: 350.000 VNĐ </h6>
+                            </div>
+                        </div>
+                        <div class="content-text">
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Những <span>tố chất cần có</span> của một nhà lãnh đạo khi coi năng lực lãnh đạo là
+                                    tố chất bẩm sinh </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Những<span> kỹ năng cần thiết</span> để trở thành nhà lãnh đạo nếu coi năng lực lãnh
+                                    đạo là một kỹ năng có thể học tập </p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Mô tả sức ảnh hưởng của các <span>hành vi lãnh đạo</span> tới cấp dưới và hiệu quả
+                                    của tổ chức, giúp nhà lãnh đạo ý thức và có định hướng thay đổi hành vi để cải thiện
+                                    năng lực lãnh đạo</p>
+                            </div>
+                            <div class="item m-top">
+                                <div class="arrow-right"></div>
+                                <p>4 cấp độ phát triển của nhân viên và bốn quy tắc lãnh đạo tương ứng với từng cấp độ
+                                    đó. Nhấn mạnh <span>lãnh đạo cần linh hoạt</span> để phù hợp với trình độ của nhân
+                                    viên</p>
+                            </div>
+                            <div class="item m-top">
+                                <div class="arrow-right"></div>
+                                <p>Đưa ra các <span>định hướng về cách lãnh đạo phù hợp</span>, hướng dẫn và tạo điều
+                                    kiện để nhân viên cảm thấy hài lòng và hoàn thành nhiệm vụ</p>
+                            </div>
+                            <div class="item m-top">
+                                <div class="arrow-right"></div>
+                                <p>Khẳng định <span>mối quan hệ hai chiều mật thiết giữa lãnh đạo - nhân viên</span> là
+                                    yếu tố then
+                                    chốt của quá trình lãnh đạo hiệu quả, tạo ra sự thay đổi tích cực cho tổ chức; đồng
+                                    thời nhắc nhở nhà lãnh đạo cần tạo ra môi trường làm việc công bằng, bình đẳng</p>
+                            </div>
+                            <div class="item m-top m-top-two">
+                                <div class="arrow-right"></div>
+                                <p><span>5 đặc tính của nhà lãnh đạo đích thực</span> cần có; mục đích tập trung vào giá
+                                    trị, sự gần gũi, có kỷ luật tự giác và giàu lòng trắc ẩn</p>
+                            </div>
+                            <div class="item m-top">
+                                <div class="arrow-right"></div>
+                                <p>Chi tiết phương pháp <span>lãnh đạo phục vụ</span> trao quyền kiểm soát và hỗ trợ
+                                    nhân viên, đáp ứng nhu cầu nhằm giúp họ phát triển tiềm năng, từ đó nâng cao hiệu
+                                    quả chung của tổ chức</p>
+                            </div>
+                            <div class="item m-top">
+                                <div class="arrow-right"></div>
+                                <p><span>Nghệ thuật khuyến khích nhân sự</span> đối mặt và giải quyết với khó khăn và sự
+                                    thay đổi, đồng thời gợi ý nhà lãnh đạo cần linh hoạt phong cách lãnh đạo và thay đổi
+                                    hiệu quả với mọi thách thức</p>
+                            </div>
+                            <div class="item m-top">
+                                <div class="arrow-right"></div>
+                                <p>Phương pháp <span>tâm động học</span> giúp nhà lãnh đạo nắm được động lực và hành vi
+                                    của nhân
+                                    viên, định hướng hành vi, nâng cao hiệu quả công việc</p>
+                            </div>
+                            <div class="item m-top">
+                                <div class="arrow-right"></div>
+                                <p>Hiểu hơn về quan niệm <span>lãnh đạo có đạo đức</span></p>
+                            </div>
+                            <div class="item">
+                                <div class="arrow-right"></div>
+                                <p>Phương pháp <span>gắn kết đội nhóm</span> giúp đạt được năng suất cao hơn; bí quyết
+                                    sử dụng nguồn nhân sự hiệu quả, nâng cao chất lượng và đổi mới sản phẩm và dịch
+                                    vụ</span></p>
+                            </div>
+                            <div class="item m-top">
+                                <div class="arrow-right"></div>
+                                <p>Phá vỡ rào cản về <span>giới tính và lãnh đạo</span>, đóng góp cho doanh nghiệp về
+                                    mặt đạo đức, năng suất, làm giảm tính xung đột, góp phần đổi mới và nâng cao tài
+                                    chính</p>
+                            </div>
+                            <div class="item last m-top">
+                                <div class="arrow-right"></div>
+                                <p>Nâng tầm nhìn về sự <span>hội nhập, hiểu biết về văn hóa</span>, khả năng giao tiếp
+                                    của lãnh đạo, nhân viên và tổ chức nói chung, giúp cho việc lãnh đạo hiệu quả hơn mà
+                                    vẫn giữ được sự hòa đồng giữa lãnh đạo và các cá nhân</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image col-md-5 col-12">
+                        <img src="<?php echo $urlImg ?>/leadershipcapacity-building/book.png">
+                        <div class="button-register">
+                            <button class="text">đặt sách ngay</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- end leadership capacity building -->
+
+    <!-- author -->
+    <div id="author">
+        <div class="container">
+            <div class="title">
+                <img src="<?php echo $urlImg ?>/author/title.png">
+                <h2>Thông tin tác giả</h2>
+            </div>
+            <div class="content">
+                <div class="container">
+                    <div class="line">
+                        <div class="item">
+                            <img type="button" data-toggle="modal" data-target="#dzung" src="<?php echo $urlImg ?>/author/line-one/1.png">
+                            <div type="button" data-toggle="modal" data-target="#dzung" class="name-author">Mr. TONY
+                                DZUNG</div>
+                            <a type="button" data-toggle="modal" data-target="#dzung">xem chi tiết</a>
+                            <!-- modal -->
+
+                            <!-- end modal -->
+                        </div>
+                        <div class="item">
+                            <img type="button" data-toggle="modal" data-target="#hieu" src="<?php echo $urlImg ?>/author/line-one/2.png">
+                            <div type="button" data-toggle="modal" data-target="#hieu" class="name-author">Mr. Trần
+                                Trung Hiếu</div>
+                            <a type="button" data-toggle="modal" data-target="#hieu">xem chi tiết</a>
+                            <!-- modal -->
+
+                            <!-- end modal -->
+                        </div>
+                        <div class="item">
+                            <img type="button" data-toggle="modal" data-target="#kropeger" src="<?php echo $urlImg ?>/author/line-one/3.png">
+                            <div type="button" data-toggle="modal" data-target="#kropeger" class="name-author">Mr. OTTO
+                                KROEGER</div>
+                            <a type="button" data-toggle="modal" data-target="#kropeger">xem chi tiết</a>
+                            <!-- modal -->
+
+                            <!-- end modal -->
+                        </div>
+                    </div>
+                    <div class="line mt-5 last">
+                        <div class="item">
+                            <img type="button" data-toggle="modal" data-target="#thuesen" src="<?php echo $urlImg ?>/author/line-two/4.png">
+                            <div type="button" data-toggle="modal" data-target="#thuesen" class="name-author">Ms. JANET
+                                M. THUESEN</div>
+                            <a type="button" data-toggle="modal" data-target="#thuesen">xem chi tiết</a>
+                            <!-- modal -->
+
+                            <!-- end modal -->
+                        </div>
+                        <div class="item">
+                            <img type="button" data-toggle="modal" data-target="#rutledge" src="<?php echo $urlImg ?>/author/line-two/5.png">
+                            <div type="button" data-toggle="modal" data-target="#rutledge" class="name-author">Mr. HILE
+                                RUTLEDGE</div>
+                            <a type="button" data-toggle="modal" data-target="#rutledge">xem chi tiết</a>
+                            <!-- modal -->
+
+                            <!-- end modal -->
+                        </div>
+                        <div class="item">
+                            <img type="button" data-toggle="modal" data-target="#northouse" src="<?php echo $urlImg ?>/author/line-two/6.png">
+                            <div type="button" data-toggle="modal" data-target="#northouse" class="name-author">Mr.
+                                PETER G. NORTHOUSE</div>
+                            <a type="button" data-toggle="modal" data-target="#northouse">xem chi tiết</a>
+                            <!-- modal -->
+
+                            <!-- end modal -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end author -->
+    <!-- Benefits of buying books -->
+    <div id="benefits">
+        <div class="container">
+            <div class="title">
+                <img src="<?php echo $urlImg ?>/benefits-of-buying-books/title.png">
+                <h2>lợi ích khi mua sách</h2>
+            </div>
+            <div class="content">
+
+                <img src="<?php echo $urlImg ?>/benefits-of-buying-books/bg-div.png">
+                <div class="depcrip-text">
+                    <div>
+                        <p class="p-one ">Thiết lập, thay đổi tư duy & phương pháp quản lý, lãnh đạo về Quản trị
+                            nhân sự,
+                            giúp nhà lãnh đạo nâng cao kỹ năng và hiểu biết về Tuyển dụng để tuyển đúng người - dùng
+                            đúng việc</p>
+                    </div>
+                    <div>
+                        <p class="p-two">Cung cấp nhiều công cụ, mô hình tuyển dụng khoa học dễ ứng dụng cho nhà
+                            lãnh
+                            đạo & team Tuyển dụng nhân sự để chọn lọc, tuyển dụng và chiêu mộ đúng người tài phù hợp
+                            với
+                            văn hóa doanh nghiệp</p>
+                    </div>
+                    <div>
+                        <p class="p-three">Cập nhật kiến thức quản trị nhân sự và doanh nghiệp mới trong kỷ nguyên
+                            mới,
+                            giúp nâng cao năng lực lãnh đạo, ứng phó linh hoạt của nhà lãnh đạo doanh nghiệp</p>
+                    </div>
+                    <div>
+                        <p class="p-four">Hỗ trợ giải quyết những khó khăn, bất cập trong Quản trị nhân sự doanh
+                            nghiệp
+                            từ các case study và bài học kinh nghiệm thực tiễn để nhà lãnh đạo & team Tuyển dụng
+                            nhân sự
+                            ứng dụng thay đổi phù hợp với tình hình cụ thể của tổ chức</p>
+                    </div>
+                    <div>
+                        <p class="p-five">Củng cố, nâng cao vị thế, sức cạnh tranh khác biệt bền vững của doanh
+                            nghiệp
+                            với đối thủ trên nền tảng giá trị văn hóa cốt lõi - điều mà chỉ Con người phù hợp mới
+                            tạo
+                            được</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="button-register">
+                <button class="text">đăng ký ngay</button>
+            </div>
+        </div>
+    </div>
+    <section id="stories">
+        <div class="container">
+            <div class="title-main">
+                <img src="<?php echo $urlImg ?>/slide/title.png">
+                <h2>câu chuyện thành công</h2>
+            </div>
+            <div class="row text-center">
+                <?php echo $this->blkDocument($this->arrParams, 'feedback', array('cache' => true, 'type' => array('tony'))); ?>
+                <div class="button-register">
+                    <button class="text">đăng ký ngay</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="commitment">
+        <div class="container">
+            <div class="title">
+                <img src="<?php echo $urlImg ?>/commitment/title.png">
+                <h2>tủ sách doanh nhân hbr <span>cam kết</span></h2>
+            </div>
+            <div class="content">
+                <div class="container">
+                    <div class="row">
+                        <div class="depcrip col-12 col-md-8">
+                            <div class="item">
+                                <img src="<?php echo $urlImg ?>/commitment/icon1.png">
+                                <div class="depcrip-text">
+                                    <h5>tác giả uy tín có nhiều năm kinh nghiệm thực chiến:</h5>
+                                    <p>NXB hàng đầu từ các tác giả có nhiều năm kinh nghiệm thực chiến trong ngành Quản
+                                        trị Nhân sự, Quản trị kinh doanh và Sales & Marketing</p>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <img src="<?php echo $urlImg ?>/commitment/icon2.png">
+                                <div class="depcrip-text">
+                                    <h5>ấn phẩm xuất bản độc quyền</h5>
+                                    <p>Lần đầu tiên bộ sách được dịch, xuất bản và phát hành độc quyền bởi Trường doanh
+                                        nhân HBR</p>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <img src="<?php echo $urlImg ?>/commitment/icon3.png">
+                                <div class="depcrip-text">
+                                    <h5>được chuyên gia đánh giá cao</h5>
+                                    <p>Hơn 10.000+ lãnh đạo, quản lý Việt Nam tin tưởng đọc và áp dụng thành công</p>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="<?php echo $urlImg ?>/commitment/icon4.png">
+                                <div class="depcrip-text">
+                                    <h5>cung cấp kiến thức nền tảng</h5>
+                                    <p>Hệ thống kiến thức chi tiết, bài bản và nhiều bài học kinh nghiệm từ các case
+                                        study thực tế, có thể áp dụng ngay vào doanh nghiệp Việt Nam</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image col-12 col-md-4">
+                            <img src="<?php echo $urlImg ?>/commitment/book.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-register">
+                <button id="check" class="text">đăng ký ngay</button>
+            </div>
+        </div>
+    </div>
+    <!-- end commitment -->
+    <!-- endow -->
+    <div id="endow">
+        <div class="container">
+            <div class="title">
+                <img src="<?php echo $urlImg ?>/endow/title.png">
+                <h2>ưu đãi vàng nhận ngàn quà tặng</h2>
+            </div>
+            <div class="content">
+                <div class="container">
+                    <div class="div-register">
+
+                        <div class="row">
+                            <div class="depcrip col-12 col-md-6">
+                                <div class="item">
+                                    <div class="row">
+                                        <div class="arrow col-md-3">giảm đến</div>
+                                        <div class="depcrip-arrow col-md-9">
+                                            <p class="p-one"><span>10%</span> khi đặt mua bất kỳ sách nào trước 0h (tối
+                                                thiểu từ 1 cuốn trở lên)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="row">
+                                        <div class="arrow col-md-3">chỉ còn</div>
+                                        <div class="depcrip-arrow col-md-9">
+                                            <p class="p-one"><span>986K</span> khi mua ngay combo 4 cuốn sách (giá gốc
+                                                1.298K)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="row">
+                                        <div class="arrow col-md-3">free ship</div>
+                                        <div class="depcrip-arrow col-md-9">
+                                            <p class="p-one"><span>toàn quốc</span> khi mua từ 2 cuốn trở lên </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="footer-form-register" class="form-register col-12 col-md-6">
+                                <div class="tag-input">
+                                    <img src="<?php echo $urlImg ?>/endow/icon-1.png">
+                                    <input class="css-ip" type="text" placeholder="Họ tên">
+                                </div>
+                                <div class="tag-input">
+                                    <img src="<?php echo $urlImg ?>/endow/icon2.png">
+                                    <input class="css-ip" type="text" placeholder="Điện thoại">
+                                </div>
+                                <div class="tag-input">
+                                    <img src="<?php echo $urlImg ?>/endow/icon3.png">
+                                    <input class="css-ip" type="text" placeholder="Email">
+                                </div>
+                                <div class="tag-input">
+                                    <img src="<?php echo $urlImg ?>/endow/icon5.png">
+                                    <select class="css-ip">
+                                        <option value="" disabled selected>Số lượng</option>
+                                        <option value="abc">abc</option>
+                                    </select>
+                                </div>
+                                <div class="tag-input">
+                                    <img src="<?php echo $urlImg ?>/endow/icon4.png">
+                                    <input class="css-ip" type="text" placeholder="Lời nhắn gửi gửi chúng tôi">
+                                </div>
+                                <div class="button-register">
+                                    <button class="text">đăng ký ngay</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button-bonus">
+                            <button class="text">tặng ngay</button>
+                        </div>
+                    <div class="depcrip-bonus">
+
+                        <div class="row">
+                            <div class="depcrip-text col-12 col-md-6">
+                                <div class="depcrip-order-one">
+                                    <p class="p-one">Bộ khóa học Online</p>
+                                    <p class="p-two">"thu hút, tuyển dụng, đào tạo và giữ chân nhân tài"</p>
+                                    <p class="p-three">Của TS. Alok Bharadwaj - Cựu phó chủ tịch cao cấp phụ trách chiến
+                                        lược Canon Châu Á trị giá 1.200.000 vnđ</p>
+                                    <p class="p-four">(Độc quyền tại HBR)</p>
+                                </div>
+                                <div class="depcrip-order-two">
+                                    <p class="p-one">01 cuốn lịch để bàn</p>
+                                    <p class="p-two">Quản trị nhân sự tổng hợp 12+ mô hình/phương pháp quản lý, tuyển
+                                        dụng và đào tạo nhân sự trong doanh nghiệp</p>
+                                    <p class="p-three">(Độc quyền tại HBR)</p>
+                                </div>
+                            </div>
+                            <div class="video col-12 col-md-6">
+                                <iframe src="https://www.youtube.com/embed/0Q7HCaKq-j4"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box_comment">
+        <?php
+        $link_page = $_SERVER['SCRIPT_URI'];
+        ?>
+        <div class="container">
+            <div class="fb-comments" data-href="<?php echo $link_page; ?>" width="1200" data-numposts="10" order_by="reverse_time"></div>
+        </div>
+    </div>
+    <div class="box-picture">
+        <div class="visible-xs">
+            <div class="mobiles-show">
+                <div class="lofi">
+                    <div class="img-container"><img class="img-responsive w-100" style="" src="<?php echo $urlImg; ?>/footer/hinh-anh-thuc-te (1).jpg" alt=""></div>
+                </div>
+                <div class="lofi">
+                    <div class="img-container"><img class="img-responsive w-100" style="" src="<?php echo $urlImg; ?>/footer/hinh-anh-thuc-te (2).jpg" alt=""></div>
+                </div>
+                <div class="lofi">
+                    <div class="img-container"><img class="img-responsive w-100" style="" src="<?php echo $urlImg; ?>/footer/hinh-anh-thuc-te (3).jpg" alt=""></div>
+                </div>
+                <div class="lofi">
+                    <div class="img-container"><img class="img-responsive w-100" style="" src="<?php echo $urlImg; ?>/footer/hinh-anh-thuc-te (4).jpg" alt=""></div>
+                </div>
+            </div>
+            <div class="mobiles-show">
+                <div class="lofi">
+                    <div class="img-container"><img class="img-responsive w-100" style="" src="<?php echo $urlImg; ?>/footer/hinh-anh-thuc-te (5).jpg" alt=""></div>
+                </div>
+                <div class="lofi">
+                    <div class="img-container"><img class="img-responsive w-100" style="" src="<?php echo $urlImg; ?>/footer/hinh-anh-thuc-te (6).jpg" alt=""></div>
+                </div>
+                <div class="lofi">
+                    <div class="img-container"><img class="img-responsive w-100" style="" src="<?php echo $urlImg; ?>/footer/hinh-anh-thuc-te (7).jpg" alt=""></div>
+                </div>
+                <div class="lofi">
+                    <div class="img-container"><img class="img-responsive w-100" style="" src="<?php echo $urlImg; ?>/footer/hinh-anh-thuc-te (8).jpg" alt=""></div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex hidden-xs">
+            <div class="col-md-3 col-sm-6 item">
+                <div class="img-container"><img class="img-responsive w-100" style="" src="<?php echo $urlImg; ?>/footer/hinh-anh-thuc-te (1).jpg" alt=""></div>
+            </div>
+            <div class="col-md-3 col-sm-6 item">
+                <div class="img-container"><img class="img-responsive w-100" style="" src="<?php echo $urlImg; ?>/footer/hinh-anh-thuc-te (2).jpg" alt=""></div>
+            </div>
+            <div class="col-md-3 col-sm-6 item">
+                <div class="img-container"><img class="img-responsive w-100" style="" src="<?php echo $urlImg; ?>/footer/hinh-anh-thuc-te (3).jpg" alt=""></div>
+            </div>
+            <div class="col-md-3 col-sm-6 item">
+                <div class="img-container"><img class="img-responsive w-100" style="" src="<?php echo $urlImg; ?>/footer/hinh-anh-thuc-te (4).jpg" alt=""></div>
+            </div>
+            <div class="col-md-3 col-sm-6 item">
+                <div class="img-container"><img class="img-responsive w-100" style="" src="<?php echo $urlImg; ?>/footer/hinh-anh-thuc-te (5).jpg" alt=""></div>
+            </div>
+            <div class="col-md-3 col-sm-6 item">
+                <div class="img-container"><img class="img-responsive w-100" style="" src="<?php echo $urlImg; ?>/footer/hinh-anh-thuc-te (6).jpg" alt=""></div>
+            </div>
+            <div class="col-md-3 col-sm-6 item">
+                <div class="img-container"><img class="img-responsive w-100" style="" src="<?php echo $urlImg; ?>/footer/hinh-anh-thuc-te (7).jpg" alt=""></div>
+            </div>
+            <div class="col-md-3 col-sm-6 item">
+                <div class="img-container"><img class="img-responsive w-100" style="" src="<?php echo $urlImg; ?>/footer/hinh-anh-thuc-te (8).jpg" alt=""></div>
+            </div>
+        </div>
+    </div>
+    <div class="box_slider container" style="margin-bottom: 70px;">
+        <div class="box-header text-center" style="margin: 70px 0 50px 0;">
+            <h3 class="heading-title" style="font-size: 35px; text-transform: uppercase; color: #00285a; font-weight: 600;">CÁC KHÓA HỌC SẮP
+                DIỄN RA CỦA HBR</h3>
+        </div>
+        <?php include_once $this->arrParams['template']['pathHtml'] . '/box/slide.php'; ?>
+    </div>
+    <a href="javascript:;" style="position: fixed;bottom: 10%;right: 20px;" data-toggle="modal" data-target="#myModal">
+        <img src="/public/template/frontend/template/xay-dung-bo-may-nhan-su-cho-doanh-nghiep-vua-va-nho/images/icon-phone-new.gif" alt="icon-phone" style="width: 55px;">
+    </a>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p class="hotline">Gọi ngay để nhận tư vấn</p>
+                    <p class="text">Hãy gọi ngay cho chúng tôi để nhận được những ưu đãi mới nhất và tư vấn của chuyên
+                        gia.</p>
+                    <p><a href="tel:0829996633"><span>082.999.6633</span></a></p>
+                    <p><a href="tel:0829996886"><span>082.999.6886</span></a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal author -->
+    <div id="dzung" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="content-author">
+                    <div class="deprip-text">
+                        <div class="content">
+                            <div class="title">
+                                Mr. Tony Dzung
+                            </div>
+                            <div class="item">
+                                <p class="">Nhà sáng lập, Chủ tịch HBR Holdings</p>
+                            </div>
+                            <div class="item">
+                                <p class="">Tổng giám đốc Trường doanh nhân HBR</p>
+                            </div>
+                            <div class="item">
+                                <p class="">Một trong những người Việt Nam đầu tiên được cấp bằng NLP Master do đại
+                                    học NLP và hiệp hội NLP Hoa Kỳ
+                                    chứng nhận</p>
+                            </div>
+                            <div class="item">
+                                <p class="">Được đào tạo trực tiếp về lãnh đạo và quản trị từ các chuyên gia đến từ
+                                    các ngôi trường hàng đầu trên thế giới: Harvard, Wharton (Upen), Học viện Quân
+                                    sự Hoa Kỳ West Point, SMU, MIT…
+                                </p>
+                            </div>
+                            <div class="item">
+                                <p class="">Được huấn luyện và đào tạo trực tiếp về nhân sự bởi các chuyên gia nhân
+                                    sự hàng đầu thế giới như Dave Ulrich, Peter Cappelli,…
+                                </p>
+                            </div>
+                            <div class="item">
+                                <p class="">Được huấn luyện bởi các chuyên gia đào tạo con người hàng đầu trên thế
+                                    giới: Anthony Robbins, Robert Dilts,...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image">
+                        <img src="<?php echo $urlImg ?>/author/line-one/1.png">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="hieu" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="content-author">
+                    <div class="deprip-text">
+                        <div class="content">
+                            <div class="title">
+                                Mr. Trần Trung Hiếu
+                            </div>
+                            <div class="item">
+                                <p class="">Nhà sáng lập, Tổng giám đốc công ty TopCV Việt Nam</p>
+                            </div>
+                            <div class="item">
+                                <p class="">TopCV là website tuyển dụng lớn thứ 2 tại Việt Nam theo đánh giá của Alexa với 3 triệu người tìm việc sử dụng thường xuyên, đồng hành cùng 35,000 Doanh nghiệp, từ các tập đoàn đa quốc gia đến các công ty khởi nghiệp trẻ..</p>
+                            </div>
+                            <div class="item">
+                                <p class="">Mỗi tháng TopCV kết nối thành công 180,000 ứng viên tiềm năng với các công việc phù hợp</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image">
+                        <img src="<?php echo $urlImg ?>/author/line-one/2.png">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="kropeger" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="content-author">
+                    <div class="deprip-text">
+                        <div class="content">
+                            <div class="title">
+                                Mr. Otto Kroeger
+                            </div>
+                            <div class="item">
+                                <p class="">Là người sáng lập Otto Kroeger Associates công ty tư vấn có trụ sở tại Fairfax, Virginia, ông hiện triển khai độc quyền công cụ phân loại tính cách Myers-Briggs Type Indicator (MBTI)</p>
+                            </div>
+                            <div class="item">
+                                <p class="">Từng là giáo sĩ Luther, ông làm việc về lĩnh vực phát triển tổ chức và khoa học hành vi trong hơn hai thập kỷ</p>
+                            </div>
+                            <div class="item">
+                                <p class="">Giảng dạy Phân loại tính cách rộng rãi trên khắp Hoa Kỳ, ở Châu u và Châu Á, đồng thời hợp tác với hàng trăm tập đoàn, bao gồm AT&T, Xerox, IBM, Marine Midland Bank, Ford, Exxon và World Bank</p>
+                            </div>
+                            <div class="item">
+                                <p class="">Ông cũng làm việc nhiều với Bộ Quốc phòng, thuyết trình về Phân loại tính cách cho cả bốn quân chủng chính; công trình của ông hiện đang là khóa học bắt buộc tại nhiều trường và cơ sở đào tạo quân sự
+                                </p>
+                            </div>
+                            <div class="item">
+                                <p class="">Được huấn luyện và đào tạo trực tiếp về nhân sự bởi các chuyên gia nhân
+                                    sự hàng đầu thế giới như Dave Ulrich, Peter Cappelli,…
+                                </p>
+                            </div>
+                            <div class="item">
+                                <p class="">Được huấn luyện bởi các chuyên gia đào tạo con người hàng đầu trên thế
+                                    giới: Anthony Robbins, Robert Dilts,...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image">
+                        <img src="<?php echo $urlImg ?>/author/line-one/3.png">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="thuesen" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="content-author">
+                    <div class="deprip-text">
+                        <div class="content">
+                            <div class="title">
+                                Ms. Janet M. Thuesen
+                            </div>
+                            <div class="item">
+                                <p class="">Chủ tịch của Otto Kroeger Associates, người có nhiều kinh nghiệm trong lĩnh vực giáo dục, kinh doanh và tư vấn</p>
+                            </div>
+                            <div class="item">
+                                <p class="">Tham gia giảng dạy các cấp lớp từ mầm non đến đại học, đồng thời làm việc với những trẻ vị thành niên bị rối loạn cảm xúc và những phụ nữ nghiện ma túy</p>
+                            </div>
+                            <div class="item">
+                                <p class="">Từng là Trợ lý Phòng Phát triển Tổ chức tại Nhà Trắng và tại Bộ Giáo dục, bà đảm nhiệm lĩnh vực phát triển điều hành và quản lý. Bà đã đào tạo hàng trăm chuyên gia về quản lý, giảng dạy các kỹ năng Phân loại tính cách và đã diễn thuyết rất nhiều về chủ đề này</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image">
+                        <img src="<?php echo $urlImg ?>/author/line-two/4.png">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="rutledge" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="content-author">
+                    <div class="deprip-text">
+                        <div class="content">
+                            <div class="title">
+                                Mr. Hile Rutledge
+                            </div>
+                            <div class="item">
+                                <p class="">Chủ tịch của công ty đào tạo, tư vấn và xuất bản OKA, đồng thời là một trong những nhà đào tạo nổi tiếng nhất của Hoa Kỳ về công cụ Phân loại tính cách MBTI và các công cụ đánh giá EQ-i (Trí tuệ cảm xúc)</p>
+                            </div>
+                            <div class="item">
+                                <p class="">Đồng tác giả của cuốn sách bán chạy Biết người biết ta cùng MBTI</p>
+                            </div>
+                            <div class="item">
+                                <p class="">Ông là người có chuyên môn sâu trong việc sử dụng thực tế các đánh giá phát triển tài năng và các công cụ xây dựng tổ chức, nhằm khiến các nhà lãnh đạo và đội nhóm trở nên hiệu quả hơn</p>
+                            </div>
+                            <div class="item">
+                                <p class="">Các công trình của Hile có ảnh hưởng rộng rãi, từ tư nhân cho tới nhà nước, đã giúp hàng nghìn người cải thiện ý thức, hiệu suất nhóm, quản lý xung đột, giao tiếp và lãnh đạo
+                                </p>
+                            </div>
+                            <div class="item">
+                                <p class="">Là một nhà chuyên môn, đồng thời là giáo viên, ông đã sản phẩm hỗ trợ để giúp các giảng viên, trợ giảng và chuyên gia tư vấn khác phát triển các kỹ năng và kinh nghiệm của riêng họ
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image">
+                        <img src="<?php echo $urlImg ?>/author/line-two/5.png">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="northouse" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="content-author">
+                    <div class="deprip-text">
+                        <div class="content">
+                            <div class="title">
+                                Mr. Peter G. Northouse
+                            </div>
+                            <div class="item">
+                                <p class="">Giáo sư danh dự ngành truyền thông ở Đại học Tây Michigan, có hơn 25 năm kinh nghiệm giảng dạy về lãnh đạo, truyền thông tổ chức và truyền thông liên nhân</p>
+                            </div>
+                            <div class="item">
+                                <p class="">Có nhiều công trình học thuật và làm cố vấn ở nhiều lĩnh vực của lãnh đạo như phát triển năng lực lãnh đạo, giáo dục năng lực lãnh đạo, kiểm soát xung đột,…
+                                </p>
+                            </div>
+                            <div class="item">
+                                <p class="">Tiến sĩ tại Đại học Denver ngành giao tiếp ngôn từ, bằng thạc sĩ và cử nhân ngành giáo dục giao tiếp tại Đại học Bang Michigan
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image">
+                        <img src="<?php echo $urlImg ?>/author/line-two/6.png">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- <?php include_once $this->arrParams['template']['pathHtml'] . '/box/upcoming-course.php'; ?> -->
+    <?php include_once $this->arrParams['template']['pathHtml'] . '/box/mdl-tuvan.php'; ?>
+
+    <?php
+    echo $this->headScript()
+        ->prependFile($this->arrParams['template']['urlTheme'] . '/template/vendor/js/jquery-v1.11.3.min.js', 'text/javascript')
+        ->appendFile($this->arrParams['template']['urlTheme'] . '/template/vendor/js/bootstrap-v3.3.5.min.js', 'text/javascript')
+        ->appendFile($this->arrParams['template']['urlJs'] . '/me.js?v=' . date('dmyHis'), 'text/javascript')
+        ->appendFile($this->arrParams['template']['urlTheme'] . '/template/vendor/js/numeric-v1.9.7.min.js', 'text/javascript')
+        ->appendFile($this->arrParams['template']['urlTheme'] . '/template/vendor/js/jquery.inview.js', 'text/javascript')
+        ->appendFile($this->arrParams['template']['urlTheme'] . '/template/vendor/js/fancybox-v2.1.5.js', 'text/javascript')
+        ->appendFile($this->arrParams['template']['urlTheme'] . '/template/vendor/js/bxslider-v4.1.1.min.js', 'text/javascript')
+        ->appendFile($this->arrParams['template']['urlTheme'] . '/template/vendor/js/bootstrap-select-v1.12.4.min.js', 'text/javascript')
+        ->appendFile($this->arrParams['template']['urlThemeTemplate'] . $template . '/js/me.js', 'text/javascript');
+    ?>
+    <?php include_once $this->arrParams['template']['pathHtml'] . '/box/footer.php'; ?>
+    <?php include_once $this->arrParams['template']['pathHtml'] . '/js/footer.php'; ?>
+    <!-- end box_footer -->
+
+    <script type="text/javascript">
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 4500) {
+                $('.btn_Dangky').hide(1000);
+            } else {
+                $('.btn_Dangky').show(1000);
+            }
+        });
+        // slide
+        $(document).ready(function() {
+            var maxSlides = 3;
+            var slideWidth = 368;
+            if ($(window).width() < 800) {
+                maxSlides = 1;
+                slideWidth = 0;
+            }
+            $("#box_student").show();
+            $("#box_student .slider").bxSlider({
+                auto: false,
+                minSlides: maxSlides,
+                maxSlides: maxSlides,
+                slideWidth: slideWidth,
+                slideMargin: 30,
+                moveSlides: maxSlides,
+                responsive: true,
+                pause: 3000,
+                speed: 1500,
+                autoHover: true
+            });
+
+            setInterval(function time() {
+                var d = new Date();
+                var hours = 24 - d.getHours();
+                var min = 60 - d.getMinutes();
+                if ((hours + '').length == 1) {
+                    hours = '0' + hours;
+                }
+                if ((min + '').length == 1) {
+                    min = '0' + min;
+                }
+                var sec = 60 - d.getSeconds();
+                if ((sec + '').length == 1) {
+                    sec = '0' + sec;
+                }
+                jQuery('#hours').html(hours);
+                jQuery('#minutes').html(min);
+                jQuery('#seconds').html(sec);
+            }, 1000);
+        });
+        // Hiệu ứng text các box
+        if ($(window).width() > 991) {
+            $('.course_part .content').one('inview', function(event, visible) {
+                if (visible) {
+                    $(this).addClass('animated delayp3 animated-2s fadeInUp');
+                }
+            });
+            $('.course_part .title').one('inview', function(event, visible) {
+                if (visible) {
+                    $(this).addClass('animated delayp3 animated-2s fadeInRight');
+                }
+            });
+        }
+
+        $('.mask_currency').autoNumeric("init", {
+            mDec: 0,
+            aSep: '.',
+            aDec: ',',
+        });
+
+        $(function() {
+            $('[name=number],#ticket_type').change(function() {
+                if ($('#ticket_type').val() == '') {
+                    alert('Vui lòng chọn Loại gói');
+                } else {
+                    if ($('#ticket_type').val() == 've-vip') {
+                        var price = 6000;
+                    } else if ($('#ticket_type').val() == 've-silver') {
+                        var price = 3000;
+                    } else if ($('#ticket_type').val() == 'doanh-nghiep') {
+                        var price = 15000;
+                    } else if ($('#ticket_type').val() == 'tai-tro') {
+                        var price = 30000;
+                    }
+                    var total = Math.max(1, $('#number').val()) * price * 1000;
+                    $('[name="price"]').val(total);
+                    var total_txt = new Intl.NumberFormat('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND'
+                    }).format(total);
+                    $('#total').val(total_txt);
+                }
+            });
+            $('#frmRegister').submit(function(e) {
+                e.preventDefault();
+                formRegister('frmRegister');
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        function viewDetail(elm) {
+            if ($(elm).next().is(':visible')) {
+                $(elm).next().slideUp();
+            } else {
+                $(elm).next().slideDown();
+            }
+        }
+    </script>
+    <!-- Facebook Pixel Code -->
+    <script>
+        ! function(f, b, e, v, n, t, s) {
+            if (f.fbq) return;
+            n = f.fbq = function() {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n;
+            n.loaded = !0;
+            n.version = '2.0';
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = !0;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '369552000826707');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=369552000826707&ev=PageView&noscript=1" /></noscript>
+    <!-- End Facebook Pixel Code -->
+</body>
+
+</html>
