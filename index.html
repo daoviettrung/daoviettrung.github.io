@@ -1,19 +1,39 @@
 <!DOCTYPE html>
-<html lang="vi" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="./Intro/intro.css">
-    <script src="./Intro/intro.js"></script>
-    <title>Happy Birthday</title>
-    <link rel="shortcut icon" type="image/png" href="./MyBirthday/birthdayCake.png"/>
-  </head>
-  <body>
-    <div class="content">
-        <div id="container" class="container">
-        <div class="counter">
-          <span id="digit" class="digit">4</span>
-        </div>
-      </div>
+<html>
+
+<head>
+    <title>Du bao thoi tiet</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="content text-center">
+        <p> Nhập thành phố cần tìm </p>
+        <input id="input_text" type="text" onkeyup="getData()"><br>
+        <img id="img" class="mt-5" src="#" /><br>
+        <input id="temperature" class="mt-5" disabled><br>
+        <input id="humidity" class="mt-5" disabled><br>
+
     </div>
-  </body>
+    </div>
+    <script>
+        async function getData() {
+            var value = document.getElementById('input_text').value;
+            const appKey = "d9406d807ff6f5f06470db71014cb2db";
+            var url = "https://api.openweathermap.org/data/2.5/weather?q=" + value + "&appid=" + appKey;
+            var response = await fetch(url);    
+            if (response.status != 404) {
+                var data = await response.json();
+                document.getElementById('img').src = "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png";
+                document.getElementById('temperature').value = Math.round( data.main.temp - 273) + "°";
+                document.getElementById('humidity').value = data.main.humidity + "%";
+            }
+        }
+
+    </script>
+
+</body>
+
 </html>
