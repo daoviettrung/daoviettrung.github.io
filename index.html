@@ -28,13 +28,16 @@
             var response = await fetch(url);
             if (response.status != 404) {
                 var data = await response.json();
+                console.log(data);
                 var length = data.list.length;
                 var content = "";
                 for (let i = 0; i < length; i++) {
-                    content += '<div class = "col-md-4 col-sm-6 mt-5 box"><p class="mt-5">'+ data.list[i].dt_txt+'</p>';
+                    content += '<div class = "col-md-6 box"><p class="mt-5">'+ data.list[i].dt_txt+'</p>';
                     content += '<img id="img" class="mt-5" src="http://openweathermap.org/img/w/' + data.list[i].weather[0].icon + '.png"" style="max-width: 100%;" /><br>';
                     content += '<input class="mt-5" value = "Nhiệt độ: '+Math.round( data.list[i].main.temp - 273)+'°" disabled><br>';
-                    content += '<input class="mt-5" value = "Độ ẩm : '+data.list[i].main.humidity+'%" disabled><br></div>';
+                    content += '<input class="mt-5" value = "Độ ẩm : '+data.list[i].main.humidity+'%" disabled><br>';
+                    content += '<input class="mt-5" value = "Nhiệt độ cao nhất/ngày: '+Math.round( data.list[i].main.temp_max - 273)+'°" disabled><br>';
+                    content += '<input class="mt-5" value = "Nhiệt độ thấp nhất/ngày: '+Math.round( data.list[i].main.temp_min - 273)+'°" disabled><br></div>';
                 }
                 document.getElementById('content-main').innerHTML = content;
             }
