@@ -2,3 +2,7 @@
     padding: 1rem;
     border:1px solid black;
 }
+
+#content-main{
+    display: flex;
+}

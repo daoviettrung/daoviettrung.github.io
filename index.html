@@ -14,7 +14,7 @@
         <div class="content text-center">
             <p> Nhập thành phố cần tìm (hà nội hoặc hà nội, mỹ đình) </p>
             <input id="input_text" type="text" onkeyup="getData()"><br>
-            <div id="content-main" class="row">
+            <div id="content-main">
             </div>
     
         </div>
@@ -32,7 +32,7 @@
                 var length = data.list.length;
                 var content = "";
                 for (let i = 0; i < length; i++) {
-                    content += '<div class = "col-md-6 box"><p class="mt-5">'+ data.list[i].dt_txt+'</p>';
+                    content += '<div class = " box"><p class="mt-5">'+ data.list[i].dt_txt+'</p>';
                     content += '<img id="img" class="mt-5" src="http://openweathermap.org/img/w/' + data.list[i].weather[0].icon + '.png"" style="max-width: 100%;" /><br>';
                     content += '<input class="mt-5" value = "Nhiệt độ: '+Math.round( data.list[i].main.temp - 273)+'°" disabled><br>';
                     content += '<input class="mt-5" value = "Độ ẩm : '+data.list[i].main.humidity+'%" disabled><br>';
