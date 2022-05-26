@@ -10,3 +10,7 @@
 .name-date{
     font-weight:bold;
 }
+
+#phim{
+    display: none;
+}

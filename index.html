@@ -16,6 +16,7 @@
             <input id="input_text" type="text" onkeyup="getData()"><br>
             <div id="content-main">
             </div>
+            <p id = "phim">Cứ xem thời tiết đi, nếu muốn xem phim thì bấm vào <a href="phim.html">đây</a></p>
             <p>Made by Dao Viet Trung</p>
     
         </div>
@@ -43,6 +44,7 @@
                     content += '<input class="mt-5" value = "Trong ngày có: '+ weather +'" disabled><br></div>';
                 }
                 document.getElementById('content-main').innerHTML = content;
+                document.getElementById('phim').style.display = "block";
             }
         }
 
@@ -53,7 +55,7 @@
             date = date.reverse();
             date = date.join("-");
             var thu = new Date(param[0]).getDay();
-            return '<p class ="name-date mt-5">'+ week[thu] +'</p><p class ="name-date">Ngày:   ' + date + '</p><p class ="name-date"> Giờ: '+ param[1]+ '</p>';
+            return '<p class ="name-date mt-5">'+ week[thu-1] +'</p><p class ="name-date">Ngày:   ' + date + '</p><p class ="name-date"> Giờ: '+ param[1]+ '</p>';
         }
 
         function formatWeather(param){
