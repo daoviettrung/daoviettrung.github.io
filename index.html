@@ -29,13 +29,12 @@
             var response = await fetch(url);
             if (response.status != 404) {
                 var data = await response.json();
-                console.log(data);
                 var length = data.list.length;
                 var content = "";
                 for (let i = 0; i < length; i++) {
                     var date = formatDate(data.list[i].dt_txt);
                     var weather = formatWeather(data.list[i].weather[0].main);
-                    content += '<div class = "box"><p class="mt-5 name-date">'+ date +'</p>';
+                    content += '<div class = "box">'+ date;
                     content += '<img id="img" class="mt-5" src="http://openweathermap.org/img/w/' + data.list[i].weather[0].icon + '.png"" style="max-width: 100%;" /><br>';
                     content += '<input class="mt-5" value = "Nhiệt độ: '+Math.round( data.list[i].main.temp - 273)+'°" disabled><br>';
                     content += '<input class="mt-5" value = "Độ ẩm : '+data.list[i].main.humidity+'%" disabled><br>';
@@ -48,11 +47,13 @@
         }
 
         function formatDate(param){
+            const week = ["Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm","Thứ sáu", "Thứ bảy", "Chủ nhật"];
             param = param.split(" ");
             var date = param[0].split("-");
             date = date.reverse();
             date = date.join("-");
-            return "Ngày: " + date + "/ Giờ:" + param[1];
+            var thu = new Date(param[0]).getDay();
+            return '<p class ="name-date mt-5">'+ week[thu] +'</p><p class ="name-date">Ngày:   ' + date + '</p><p class ="name-date"> Giờ: '+ param[1]+ '</p>';
         }
 
         function formatWeather(param){
