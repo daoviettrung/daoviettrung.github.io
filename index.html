@@ -16,6 +16,7 @@
             <input id="input_text" type="text" onkeyup="getData()"><br>
             <div id="content-main">
             </div>
+            <p>Made by Dao Viet Trung</p>
     
         </div>
     </div>
@@ -32,14 +33,34 @@
                 var length = data.list.length;
                 var content = "";
                 for (let i = 0; i < length; i++) {
-                    content += '<div class = " box"><p class="mt-5">'+ data.list[i].dt_txt+'</p>';
+                    var date = formatDate(data.list[i].dt_txt);
+                    var weather = formatWeather(data.list[i].weather[0].main);
+                    content += '<div class = "box"><p class="mt-5 name-date">'+ date +'</p>';
                     content += '<img id="img" class="mt-5" src="http://openweathermap.org/img/w/' + data.list[i].weather[0].icon + '.png"" style="max-width: 100%;" /><br>';
                     content += '<input class="mt-5" value = "Nhiệt độ: '+Math.round( data.list[i].main.temp - 273)+'°" disabled><br>';
                     content += '<input class="mt-5" value = "Độ ẩm : '+data.list[i].main.humidity+'%" disabled><br>';
                     content += '<input class="mt-5" value = "Nhiệt độ cao nhất/ngày: '+Math.round( data.list[i].main.temp_max - 273)+'°" disabled><br>';
-                    content += '<input class="mt-5" value = "Nhiệt độ thấp nhất/ngày: '+Math.round( data.list[i].main.temp_min - 273)+'°" disabled><br></div>';
+                    content += '<input class="mt-5" value = "Nhiệt độ thấp nhất/ngày: '+Math.round( data.list[i].main.temp_min - 273)+'°" disabled><br>';
+                    content += '<input class="mt-5" value = "Trong ngày có: '+ weather +'" disabled><br></div>';
                 }
                 document.getElementById('content-main').innerHTML = content;
+            }
+        }
+
+        function formatDate(param){
+            param = param.split(" ");
+            var date = param[0].split("-");
+            date = date.reverse();
+            date = date.join("-");
+            return "Ngày: " + date + "/ Giờ:" + param[1];
+        }
+
+        function formatWeather(param){
+            if(param == "Rain"){
+                return "Mưa";
+            }
+            if(param == "Clouds"){
+                return "Nhiều mây";
             }
         }
     </script>

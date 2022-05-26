@@ -6,3 +6,7 @@
 #content-main{
     display: flex;
 }
+
+.name-date{
+    font-weight:bold;
+}
