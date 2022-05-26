@@ -14,3 +14,7 @@
 #phim{
     display: none;
 }
+
+#dog{
+    max-width: 100%;
+}

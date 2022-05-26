@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dog</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <button onclick="random()">Bấm vào đây để xem ảnh tấu hài</button>
+        <img id="dog" src="" />
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+    <script>
+        async function random() {
+            var url = "https://random.dog/woof.json";
+            var response = await fetch(url);
+            var data = await response.json();
+            $('#dog').attr('src', data.url);
+        }
+    </script>
+</body>
+
+</html>
